@@ -30,11 +30,9 @@ class GetStorageLink(APIView):
 
     def get(self, request):
         urls = Storage.objects.filter(correct_usages__gt=0, file='').order_by('creation_date').values(
-            'creation_date').annotate(
-            Count('correct_usages'))
+            'creation_date').annotate(Count('correct_usages'))
         files = Storage.objects.filter(correct_usages__gt=0).exclude(file='').order_by('creation_date').values(
-            'creation_date').annotate(
-            Count('correct_usages'))
+            'creation_date').annotate(Count('correct_usages'))
 
         d = {}
         for item in urls:
