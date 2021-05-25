@@ -36,12 +36,12 @@ class GetStorageLink(APIView):
 
         d = {}
         for item in urls:
-            d[item['creation_date']] = {'links':item['correct_usages__count']}
+            d[item['creation_date']] = {'links':item['correct_usages__count'], 'files':0}
         for item in files:
             date = item['creation_date']
             value = item['correct_usages__count']
             if date in d:
                 d[date].update({'files':value})
             else:
-                d[date]={'files': value}
+                d[date]={'files': value, 'links':0}
         return Response(d)
