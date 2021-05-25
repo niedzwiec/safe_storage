@@ -46,4 +46,4 @@ class Storage(models.Model):
         super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
 
     def __str__(self):
-        return f"{self.url} {self.creation_date} {self.correct_usages}"
+        return f"{self.pk} {self.url} {self.creation_date} {self.correct_usages}"

@@ -29,19 +29,21 @@ class GetStorageLink(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        urls = Storage.objects.filter(correct_usages__gt=0, file='').values('creation_date').annotate(
+        urls = Storage.objects.filter(correct_usages__gt=0, file='').order_by('creation_date').values(
+            'creation_date').annotate(
             Count('correct_usages'))
-        files = Storage.objects.filter(correct_usages__gt=0, file__isnull=False).values('creation_date').annotate(
+        files = Storage.objects.filter(correct_usages__gt=0).exclude(file='').order_by('creation_date').values(
+            'creation_date').annotate(
             Count('correct_usages'))
 
         d = {}
         for item in urls:
-            d[item['creation_date']] = {'links':item['correct_usages__count'], 'files':0}
+            d[item['creation_date']] = {'links': item['correct_usages__count'], 'files': 0}
         for item in files:
             date = item['creation_date']
             value = item['correct_usages__count']
             if date in d:
-                d[date].update({'files':value})
+                d[date].update({'files': value})
             else:
-                d[date]={'files': value, 'links':0}
+                d[date] = {'files': value, 'links': 0}
         return Response(d)
