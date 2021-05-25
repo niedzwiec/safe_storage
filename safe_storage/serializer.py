@@ -1,4 +1,3 @@
-from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 
 from safe_storage.models import Storage
@@ -16,6 +15,7 @@ class StorageResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Storage
         fields = ['slug', 'password']
+
 
 class StorageGetDataSerializer(serializers.ModelSerializer):
     class Meta:

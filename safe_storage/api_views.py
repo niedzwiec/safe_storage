@@ -1,15 +1,16 @@
-from django.db.models import Sum, Count
+from django.db.models import Count
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, GenericAPIView, RetrieveAPIView
+from rest_framework.generics import CreateAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from safe_storage.models import Storage
-from safe_storage.serializer import StorageSerializer, StorageResponseSerializer, StorageGetDataSerializer
+from safe_storage.serializer import StorageSerializer, StorageResponseSerializer
 
 
 class StorageCreateView(CreateAPIView):
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
     serializer_class = StorageSerializer
 
     def perform_create(self, serializer):
@@ -25,7 +26,8 @@ class StorageCreateView(CreateAPIView):
 
 
 class GetStorageLink(APIView):
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         urls = Storage.objects.filter(correct_usages__gt=0, file='').values('creation_date').annotate(
             Count('correct_usages'))

@@ -1,10 +1,8 @@
-import uuid
-import string
 import random
+import string
+import uuid
+
 from django.db import models
-from datetime import datetime
-
-
 # Create your models here.
 from django.urls import reverse
 from django.utils import timezone
