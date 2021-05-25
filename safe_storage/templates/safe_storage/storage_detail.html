@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div>
+       <p><a href="{% url 'get_storage' storage.slug %}">get storage</a></p>
+        <p>Your password: {{ password }}</p>
+    </div>
+{% endblock %}
