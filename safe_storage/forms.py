@@ -10,9 +10,6 @@ class CheckPasswordForm(forms.Form):
 
     def clean(self):
         data = super().clean()
-        # todo
-        if data['password'] == '1':
-            return
         try:
             Storage.objects.get(slug=data['slug'], password=hash(data['password']))
         except ObjectDoesNotExist:
