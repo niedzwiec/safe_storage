@@ -33,8 +33,15 @@ class GetStorageLink(APIView):
             Count('correct_usages'))
         files = Storage.objects.filter(correct_usages__gt=0, file__isnull=False).values('creation_date').annotate(
             Count('correct_usages'))
-        d = {str(url.get('creation_date')):
-                 {'filse': file['correct_usages__count'],
-                  'links': url['correct_usages__count']}
-             for url, file in zip(urls, files)}
+
+        d = {}
+        for item in urls:
+            d[item['creation_date']] = {'links':item['correct_usages__count']}
+        for item in files:
+            date = item['creation_date']
+            value = item['correct_usages__count']
+            if date in d:
+                d[date].update({'files':value})
+            else:
+                d[date]={'files': value}
         return Response(d)
